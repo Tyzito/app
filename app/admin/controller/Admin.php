@@ -1,13 +1,14 @@
 <?php
 namespace app\admin\controller;
 
+use app\admin\model\AdminUser as adminUserModel;
 use app\BaseController;
 use app\common\validate\AdminUser;
-use app\admin\model\AdminUser as adminUserModel;
-use think\facade\View;
 use liliuwei\think\Jump;
+use think\facade\Db;
+use think\facade\View;
 
-class Admin extends BaseController
+class Admin extends Base
 {
     use Jump;
 
@@ -23,8 +24,7 @@ class Admin extends BaseController
 
             $data['status'] = 1;
             $data['last_login_ip'] = $_SERVER['REMOTE_ADDR'];
-            $salt = 'app';
-            $data['password'] = md5($data['password'].$salt);
+            $data['password'] = md5($data['password'].config('common.salt'));
 
             try{
                 $id = (new adminUserModel())->add($data);
