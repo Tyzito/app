@@ -26,4 +26,9 @@ return [
     'tpl_replace_string' => [
         '__STATIC__' => '/static'
     ],
+    'paginate' => [
+        'list_rows' => 6,
+        'var_page' => 'page',
+        'type' => 'bootstrap'
+    ],
 ];
