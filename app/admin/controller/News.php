@@ -62,4 +62,23 @@ class News extends BaseController
             ]);
         }
     }
+
+    public function delete($id = 0)
+    {
+        if(!intval($id)){
+            return json(['status' => 0,'msg' => 'ID不合法']);
+        };
+
+        try{
+            $res = \app\admin\model\News::update(['status' => -1],['id' => $id]);
+        }catch (\Exception $e){
+            return json(['status' => 0,'msg' => $e->getMessage()]);
+        }
+
+        if(!$res){
+            return json(['status' => 0,'msg' => '删除失败']);
+        }
+
+        return json(['status' => 1,'msg' => '删除成功', 'jump_url' => $_SERVER['HTTP_REFERER']]);
+    }
 }

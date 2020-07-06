@@ -27,27 +27,37 @@ class News extends Base
     {
         $where = [];
 
-        if(!empty($data['catid'])){
+        /*if(!empty($data['catid'])){
             $where['catid'] = $data['catid'];
         }
 
         if(!empty($data['title'])){
-            $where['title'] = $data['title'];
+            $where['title'] = ['like','%'.$data['title'].'%'];
         }
 
         $where['status'] = 1;
 
         $order = [
             'id' => 'desc'
-        ];
+        ];*/
 
-        $res = self::where($where)
+        $res = self::where('status',1)
+            ->where(function ($query) use ($data){
+                if(!empty($data['title'])){
+                    $query->whereLike('title','%'.$data['title'].'%');
+                }
+            })
+            ->where(function ($query) use ($data){
+                if(!empty($data['catid'])){
+                    $query->where('catid',$data['catid']);
+                }
+            })
             ->where(function ($query) use ($data){
                 if(!empty($data['start_time']) && !empty($data['end_time']) && $data['start_time'] < $data['end_time']){
                     $query->whereTime('create_time','>',strtotime($data['start_time']))->whereTime('create_time','<',strtotime($data['end_time']));
                 }
             })
-            ->order($order)
+            ->order('id','desc')
             ->paginate(config('view.paginate'));
 
         return $res;
