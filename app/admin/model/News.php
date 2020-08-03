@@ -5,11 +5,11 @@ class News extends Base
 {
     protected $table = 'news';
 
-    public function getCatIdAttr($value)
+    /*public function getCatIdAttr($value)
     {
         $category = config('category.lists');
         return $category[$value];
-    }
+    }*/
 
     public function getIsPositionAttr($value)
     {
@@ -63,18 +63,16 @@ class News extends Base
         return $res;
     }
 
-    public static function getNewsCondition($whereData)
+    public static function getNewsCondition($whereData,$form,$size)
     {
-        $condition['status'] = 1;
+        $whereData[] = ['status','=',1];
         $order = [
             'id' => 'desc'
         ];
 
-        $form = ($whereData['page'] - 1) * $whereData['size'];
-
-        $res = self::where($condition)
+        $res = self::where($whereData)
             ->order($order)
-            ->limit($form,$whereData['size'])
+            ->limit($form,$size)
             ->select();
 
         return $res;
@@ -82,11 +80,75 @@ class News extends Base
 
     public static function getNewsCountCondition($whereData)
     {
-        $condition['status'] = 1;
+        $whereData[] = ['status','=',1];
         $order = [
             'id' => 'desc'
         ];
 
-        return self::where($condition)->order($order)->count();
+        return self::where($whereData)->order($order)->count();
+    }
+
+    public static function getIndexHeadNormalNews($num = 4)
+    {
+        $data = [
+            'status' => 1,
+            'is_head_figure' => 1
+        ];
+
+        $order = [
+            'id' => 'desc'
+        ];
+
+        return self::field(self::getListField())
+            ->where($data)
+            ->order($order)
+            ->limit($num)
+            ->select();
+    }
+
+    public static function getRankNormalNews($num = 4)
+    {
+        $data = [
+            'status' => 1,
+        ];
+
+        $order = [
+            'read_count' => 'desc'
+        ];
+
+        return self::field(self::getListField())
+            ->where($data)
+            ->order($order)
+            ->limit($num)
+            ->select();
+    }
+
+    public static function getPositionNormalNews($num = 20)
+    {
+        $data = [
+            'status' => 1,
+            'is_position' => 1
+        ];
+
+        $order = [
+            'id' => 'desc'
+        ];
+
+        return self::field(self::getListField())
+            ->where($data)
+            ->order($order)
+            ->limit($num)
+            ->select();
+    }
+
+    private static function getListField()
+    {
+        return [
+            'id',
+            'catid',
+            'image',
+            'title',
+            'read_count'
+        ];
     }
 }
