@@ -15,3 +15,5 @@ Route::get(':ver/index','api/:ver.index/index');
 Route::resource(':ver/news','api/:ver.news');
 
 Route::get(':ver/rank','api/:ver.rank/index');
+
+Route::get(':ver/init','api/:ver.index/init');
