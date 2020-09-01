@@ -33,5 +33,12 @@ return [
     'app_types' => [
         'ios',
         'android'
+    ],
+    // 阿里大于验证码
+    'alidayu' => [
+        'access_key' => env('alidayu.access_key'),
+        'secret_key' => env('alidayu.secret_key'),
+        'sign_name' => env('alidayu.sign_name'),
+        'template_code' => env('alidayu.template_code'),
     ]
 ];

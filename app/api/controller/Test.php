@@ -4,9 +4,11 @@
 namespace app\api\controller;
 
 
+use AlibabaCloud\Client\AlibabaCloud;
 use app\BaseController;
 use app\common\exception\ApiHandleException;
 use app\common\lib\Aes;
+use app\common\lib\Alidayu;
 use think\Db;
 use think\Exception;
 use think\exception\HttpException;
@@ -42,5 +44,15 @@ class Test extends Common
     public function delete($id)
     {
         echo $id.'hgehge';exit;
+    }
+
+    public function sendSms()
+    {
+        Alidayu::getInstance()->setSmsIdentify('13488277451');
+    }
+
+    public function token()
+    {
+        return setAppLoginToken('13488277451');
     }
 }

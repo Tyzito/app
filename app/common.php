@@ -54,3 +54,13 @@ function checkSignPass($data)
 
     return true;
 }
+
+/**
+ * 设置登录的 token 唯一性
+ * @param int $phone
+ * @return string
+ */
+function setAppLoginToken($phone = 0)
+{
+    return sha1(md5(uniqid(md5(microtime(true)),true)).$phone);
+}
